@@ -162,14 +162,27 @@ https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html
 
 ### Computers with Linux (INTEL CPU + AMD RADEON GPU)
 
+```
+TODO
+```
+
 ### Computers with MacOS (INTEL CPU)
 
+```
+TODO
+```
 
 ### Computers with MacOS (INTEL CPU + AMD RADEON)
 
+```
+TODO
+```
 
 ### Computers with MacOS (ARM CPU)
 
+```
+TODO
+```
 
 ### Computers with Windows XY (any CPU)
 
