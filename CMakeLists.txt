@@ -1,81 +1,160 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
+
+#
+# To be enable for target with NVIDIA GPUs
+#
+#project(cmake_and_cuda LANGUAGES CXX CUDA)
+#enable_language(CUDA)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 message("${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
+
+###################################################################################################
 #
-#  RASPBERRY PI 4 FLAGS
+#  APPLE MACOS (ARM M1/M2 cores)
 #
 
-SET(CMAKE_CXX_STANDARD 17)    # 17 choisi pour metal
+SET(CMAKE_CXX_STANDARD    17)    # 17 choisi pour metal
 SET(CMAKE_BUILD_TYPE Release)
 
-#SET (CMAKE_C_COMPILER   /usr/bin/clang)
-#SET (CMAKE_CXX_COMPILER /usr/bin/clang++)
-#SET (CMAKE_C_COMPILER   /opt/homebrew/bin/gcc-11)
-#SET (CMAKE_CXX_COMPILER /opt/homebrew/bin/g++-11)
-#SET (CMAKE_C_COMPILER   /opt/homebrew/Cellar/llvm/13.0.1_1/bin/clang++
-
-SET (CMAKE_C_COMPILER   /opt/homebrew/Cellar/llvm/15.0.2//bin/clang)
-SET (CMAKE_CXX_COMPILER /opt/homebrew/Cellar/llvm/15.0.2/bin/clang++)
+SET (CMAKE_C_COMPILER   /opt/homebrew/Cellar/llvm/15.0.3/bin/clang)
+SET (CMAKE_CXX_COMPILER /opt/homebrew/Cellar/llvm/15.0.3/bin/clang++)
 
 SET(CMAKE_CXX_FLAGS "-Wall")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcpu=native -mtune=native -std=c++17")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -ffast-math")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
-#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Rpass=loop-vectorize -Rpass-missed=loop-vectorize -Rpass-analysis=loop-vectorize") #
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_ENABLE_SDL_")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/opt/homebrew/include") # MACOS ARM (BREW)
 
+SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/opt/homebrew/lib")    # MACOS ARM (BREW)
+SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework OpenGL")      # OPENGL
+SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Metal")       # METAL
+SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation ") # METAL
+SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework MetalKit")    # METAL
+
+
+####################################################################################################
 #
-# LINKER FLAGS (CXX) SPECIFIQUES A MACOS (APPLE M1)
-#
-
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/opt/homebrew/include")
-
-# FLAGS (LINKER) SPECIFIQUES A MACOS
-
-SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/opt/homebrew/lib")   # UHD
-SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework OpenGL") # UHD
-SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Metal -framework Foundation -framework MetalKit") # UHD
-
-#
-# LINKER FLAGS (CXX) SPECIFIQUES A MACOS (APPLE INTEL)
+#  APPLE MACOS (INTEL x86 cores)
 #
 
-#SET(CMAKE_CXX_FLAGS        "${CMAKE_CXX_FLAGS}        -I/usr/local/include -D_MKL_")
-#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/usr/local/lib")   # UHD
-#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Accelerate") # UHD
+#SET(CMAKE_CXX_STANDARD    17)    # 17 choisi pour metal
+#SET(CMAKE_BUILD_TYPE Release)
+
+#SET (CMAKE_C_COMPILER   /opt/homebrew/Cellar/llvm/15.0.3/bin/clang)
+#SET (CMAKE_CXX_COMPILER /opt/homebrew/Cellar/llvm/15.0.3/bin/clang++)
+
+#SET(CMAKE_CXX_FLAGS "-Wall")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -mtune=native -std=c++17")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -ffast-math")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_ENABLE_SDL_")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/include")                 # MACOS INTEL (BREW)
+
+#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/usr/local/lib")       # MACOS INTEL (BREW)
+#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework OpenGL")      # OPENGL
+#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Metal")       # METAL
+#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation ") # METAL
+#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework MetalKit")    # METAL
+
+
+###################################################################################################
+#
+#  LINUX @T ENSEIRB-MATMECA (INTEL x86 cores)
+#
+
+#SET(CMAKE_CXX_STANDARD    14)
+#SET(CMAKE_BUILD_TYPE Release)
+
+##SET (CMAKE_C_COMPILER   /opt/homebrew/Cellar/llvm/15.0.3/bin/clang)
+##SET (CMAKE_CXX_COMPILER /opt/homebrew/Cellar/llvm/15.0.3/bin/clang++)
+
+#SET(CMAKE_CXX_FLAGS "-Wall")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -mtune=native -std=c++17")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -ffast-math")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+##SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_ENABLE_SDL_")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/include")                 # MACOS INTEL (BREW)
+
+##SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/usr/local/lib")       # MACOS INTEL (BREW)
+##SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework OpenGL")      # OPENGL
+##SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Metal")       # METAL
+#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation ") # METAL
+##SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework MetalKit")    # METAL
+
+
+###################################################################################################
+#
+#  LINUX on NVIDIA ORIN devices (ARM + GPU cores)
+#
+
+#SET(CMAKE_CXX_STANDARD    17)
+#SET(CMAKE_BUILD_TYPE Release)
+
+#SET(CMAKE_CXX_FLAGS "-Wall")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -mtune=native -std=c++17")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -ffast-math")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_ENABLE_SDL_")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_ENABLE_CUDA_")
+
+###################################################################################################
+#
+#  LINUX on RASPBERRY PI-4 devices (ARM)
+#
+
+#SET(CMAKE_CXX_STANDARD    17)
+#SET(CMAKE_BUILD_TYPE Release)
+
+#SET(CMAKE_CXX_FLAGS "-Wall")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -mtune=native -std=c++17")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -ffast-math")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_ENABLE_SDL_")
 
 ########################################################################################################################
+#
 project(galax_eirb)
 
 # #
  set(SOURCE_FILES
-         ./src/others/geometry.cpp
          ./src/datatype/datatype.cpp
-         ./src/data/Loader.cpp
-         src/RGBColors/RGBColors.cpp
+         ./src/datatype/Loader.cpp
          ./src/Galaxy/Galaxy.cpp
          ./src/kernel/Kernel.cpp
-         ./src/kernel/null/RenderNull.cpp
+         ./src/kernel/null/RenderNull.cpp                       # NULL RENDER
          ./src/kernel/naive/RenderNaive.cpp
          ./src/kernel/optimized/RenderOptim.cpp
-         ./src/kernel/auto_simd/RenderAutoSIMD.cpp
-         ./src/kernel/simd/RenderSIMD.cpp
-         ./src/kernel/metal/RenderMetalApple.cpp
-         ./src/kernel/openmp/RenderOpenMP.cpp
-         ./src/kernel/simd_openmp/RenderSIMDOpenMP.cpp
+         ./src/kernel/auto_simd/RenderAutoSIMD.cpp              # AUTO-SIMD ?
+         ./src/kernel/simd/NEON/RenderNEON.cpp                  # SIMD NEON
+         ./src/kernel/simd/SSE4/RenderSSE4.cpp                  # SIMD SSE4
+         ./src/kernel/simd/AVX2/RenderAVX2.cpp                  # SIMD AVX2
+         ./src/kernel/simd/AVX512/RenderAVX512.cpp              # SIMD AVX512
+         ./src/kernel/metal/RenderMetalApple.cpp                # APPLE METAL (GPU)
+         ./src/kernel/cuda/RenderCUDA.cu                        # NVIDIA CUDA (GPU)
+         ./src/kernel/cuda/galaxeirb.cu                         # NVIDIA CUDA (GPU)
+         ./src/kernel/openmp/RenderOpenMP.cpp                   # OPENMP
+         ./src/kernel/simd_openmp/NEON/RenderNEONOpenMP.cpp     # OPENMP + NEON
+         ./src/kernel/simd_openmp/SSE4/RenderSSE4OpenMP.cpp     # OPËNMP + SSE4
+         ./src/kernel/simd_openmp/AVX2/RenderAVX2OpenMP.cpp     # OPENMP + AVX2
+         ./src/kernel/simd_openmp/AVX512/RenderAVX512OpenMP.cpp # OPENMP + AVX512
+
          ./src/Backend/Render.cpp                               # Generic window classes
          ./src/Backend/SDLRender/SDLRender.cpp                  # Generic window classes
-         ./src/Backend/OpenGLRender/OpenGLRender.cpp            #  Generic window classes
+         ./src/Backend/OpenGLRender/OpenGLRender.cpp            # Generic window classes
+
          ./src//Backend/NullRender/NullRender.cpp
          ./src//Backend/OnlyOpenGL/OnlyOpenGL.cpp
          ./src//Backend/SDLBlackPixel/SDLBlackPixel.cpp
          ./src//Backend/SDLColorPixel/SDLColorPixel.cpp
          ./src//Backend/SpriteOpenGL/SpriteOpenGL.cpp
-         ./src//Backend/BackendSprite/tools.cpp
-         ./src//Backend/BackendSprite/BackendSprite.cpp
+         ./src//Backend/BackEndSprite/tools.cpp
+         ./src//Backend/BackEndSprite/BackEndSprite.cpp
          ./src//Backend/BackEndColoredSprite/BackEndColoredSprite.cpp
-         ./src/others/text.cpp
+         ./src/Backend/RGBColors/RGBColors.cpp
+         ./src/Backend/others/text.cpp
          ./src/main.cpp )
 
 
@@ -83,5 +162,5 @@ add_executable(galax_eirb ${SOURCE_FILES})
 
 target_link_libraries(galax_eirb SDL2)
 target_link_libraries(galax_eirb GLEW)
-target_link_libraries(galax_eirb GLU)
-target_link_libraries(galax_eirb GL)
+target_link_libraries(galax_eirb  GLU)
+target_link_libraries(galax_eirb   GL)
