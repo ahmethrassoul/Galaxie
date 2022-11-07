@@ -266,13 +266,12 @@ int main( int argc, char ** argv )
 
 #if defined(__APPLE__)
         std::cout << "(EE) - metal         : " << std::endl;
-        return EXIT_FAILURE;
 #endif
 
 #if defined(_ENABLE_CUDA_)
         std::cout << "(EE) - cuda          : " << std::endl;
-        return EXIT_FAILURE;
 #endif
+        return EXIT_FAILURE;
     }
 
     delete_galaxy( gg );
