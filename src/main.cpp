@@ -22,12 +22,14 @@
  *  source distribution.
  *
  */
-#include <stdio.h>
+#include <cstdio>
 #include <stdbool.h>
-#include <math.h>
+#include <cmath>
 #include <sys/time.h>
 #include <chrono>
+#include <iostream>
 #include <iomanip>
+#include <ctime>
 
 #include "Backend/NullRender/NullRender.hpp"
 #include "Backend/SDLBlackPixel/SDLBlackPixel.hpp"
@@ -119,10 +121,10 @@ int main( int argc, char ** argv )
 #endif
 
 #if (defined(__ICC) || defined(__INTEL_COMPILER)) == 0
-    std::time_t t = std::time(nullptr);
-    std::cout << "#(II) + Trace date and time : " << std::put_time(std::localtime(&t), "%c %Z") << '\n';
-    printf("#(II)\n");
+//    std::time_t t = std::time(nullptr);
+//    std::cout << "#(II) + Trace date and time : " << std::put_time(std::localtime(&t), "%c %Z") << '\n';
 #endif
+    printf("#(II)\n");
 
     int width  = 640 * 7 / 4;
     int height = 480 * 6 / 4;

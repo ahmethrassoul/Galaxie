@@ -23,6 +23,7 @@
  *
  */
 #include "datatype.h"
+#include <cstdlib>
 //
 //
 //
