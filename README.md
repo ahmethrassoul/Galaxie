@@ -132,7 +132,7 @@ whereas ARCH Linux users should execute the following command:
 
 ```
 sudo pamac upgrade
-sudo pamac install freeglut3-dev libglew-dev libsdl2-dev
+sudo pamac install glew
 ```
 
 Installing these libraries should allow you to take advantage of the major features and optimization approaches. For the rest, e.g. CUDA parallelization, you still have the school computers.
