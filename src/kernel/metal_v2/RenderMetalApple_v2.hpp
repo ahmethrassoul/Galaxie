@@ -22,8 +22,8 @@
  *  source distribution.
  *
  */
-#if !defined(_RenderMetalApple_) && defined(__APPLE__)
-#define _RenderMetalApple_
+#if !defined(_RenderMetalApple_v2_) && defined(__APPLE__)
+#define _RenderMetalApple_v2_
 
 #include "../Kernel.hpp"
 #include <iostream>
@@ -54,7 +54,7 @@
     } truc;
 #endif
 
-class RenderMetalApple  : public Kernel
+class RenderMetalApple_v2  : public Kernel
 {
 public:
     MTL::Device* _mDevice;
@@ -77,8 +77,8 @@ public:
     bool sharedMemory;
 
 public:
-     RenderMetalApple(struct galaxy g );
-    ~RenderMetalApple();
+     RenderMetalApple_v2(struct galaxy g );
+    ~RenderMetalApple_v2();
 
     void execute();
     void render();

@@ -23,14 +23,14 @@
  *
  */
 #if defined(__APPLE__)
-#define NS_PRIVATE_IMPLEMENTATION
-#define CA_PRIVATE_IMPLEMENTATION
-#define MTL_PRIVATE_IMPLEMENTATION
-#include "RenderMetalApple.hpp"
+//#define NS_PRIVATE_IMPLEMENTATION
+//#define CA_PRIVATE_IMPLEMENTATION
+//#define MTL_PRIVATE_IMPLEMENTATION
+#include "RenderMetalApple_v2.hpp"
 #include <iostream>
+#include <cmath>
 
-
-RenderMetalApple::RenderMetalApple( struct galaxy g ) : galaxie( g )
+RenderMetalApple_v2::RenderMetalApple_v2( struct galaxy g ) : galaxie( g )
 {
 
     nElements = galaxie.size; // le nombre d'elements dans la galaxie
@@ -57,7 +57,7 @@ RenderMetalApple::RenderMetalApple( struct galaxy g ) : galaxie( g )
     // Load the shader files with a .metal file extension in the project
     //
 #if 1
-    NS::String* filePath         = NS::String::string("./galaxeirb.metallib", NS::UTF8StringEncoding);
+    NS::String* filePath         = NS::String::string("./galaxeirb_v2.metallib", NS::UTF8StringEncoding);
     MTL::Library *defaultLibrary = _mDevice->newLibrary(filePath, &error);
 #else
     MTL::Library *defaultLibrary = _mDevice->newDefaultLibrary();
@@ -71,19 +71,19 @@ RenderMetalApple::RenderMetalApple( struct galaxy g ) : galaxie( g )
     //
     //
     //
-    auto str1 = NS::String::string("body2Body_exec", NS::ASCIIStringEncoding);
+    auto str1 = NS::String::string("body2Body_exec_v2", NS::ASCIIStringEncoding);
     MTL::Function *execFunction = defaultLibrary->newFunction(str1);
     if (execFunction == nullptr)
     {
-        std::cout << "(EE) Failed to find the (body2Body_exec) function." << std::endl;
+        std::cout << "(EE) Failed to find the (body2Body_exec_v2) function." << std::endl;
         exit( EXIT_FAILURE );
     }
 
-    auto str2 = NS::String::string("body2Body_copy", NS::ASCIIStringEncoding);
+    auto str2 = NS::String::string("body2Body_copy_v2", NS::ASCIIStringEncoding);
     MTL::Function *copyFunction = defaultLibrary->newFunction(str2);
     if (copyFunction == nullptr)
     {
-        std::cout << "(EE) Failed to find the (body2Body_copy) function." << std::endl;
+        std::cout << "(EE) Failed to find the (body2Body_copy_v2) function." << std::endl;
         exit( EXIT_FAILURE );
     }
 
@@ -188,7 +188,7 @@ RenderMetalApple::RenderMetalApple( struct galaxy g ) : galaxie( g )
  *
  *
  */
-RenderMetalApple::~RenderMetalApple()
+RenderMetalApple_v2::~RenderMetalApple_v2()
 {
 
 }
@@ -199,7 +199,7 @@ RenderMetalApple::~RenderMetalApple()
  *
  *
  */
-void RenderMetalApple::execute()
+void RenderMetalApple_v2::execute()
 {
     //
     // Create a command buffer to hold commands.
@@ -248,11 +248,14 @@ void RenderMetalApple::execute()
     // Calculate a threadgroup size.
     //
 
-    MTL::Size    gridSize        = MTL::Size::Make(nElements, 1, 1);
+    int optim_nElements = nElements; // chaque coeur traite 2 elements
+
+    MTL::Size    gridSize        = MTL::Size::Make(optim_nElements, 1, 1);
     NS::UInteger threadGroupSize = _mExecFunctionPSO->maxTotalThreadsPerThreadgroup();
-    if (threadGroupSize > nElements)
+
+    if (threadGroupSize > optim_nElements)
     {
-        threadGroupSize = nElements;
+        threadGroupSize = optim_nElements;
     }
     MTL::Size threadgroupSize = MTL::Size::Make(threadGroupSize, 1, 1);
 
@@ -334,7 +337,7 @@ void RenderMetalApple::execute()
  *
  *
  */
-int RenderMetalApple::N()
+int RenderMetalApple_v2::N()
 {
     return nElements;
 }
@@ -345,7 +348,7 @@ int RenderMetalApple::N()
  *
  *
  */
-Galaxy* RenderMetalApple::particules()
+Galaxy* RenderMetalApple_v2::particules()
 {
     return &galaxie;
 }
