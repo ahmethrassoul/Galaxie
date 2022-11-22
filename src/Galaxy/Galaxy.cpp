@@ -94,13 +94,13 @@ Galaxy::Galaxy(struct galaxy g)
     color     = (int8_t*)malloc(sizeof(int8_t) * size);
     memcpy(color, g.color, sizeof(int8_t) * size);
 
-    std::cout << std::setiosflags(std::ios_base::showpos);
-    std::cout << "(II) End of a Galaxy object creation" << std::endl;
-    std::cout << "(II) -    x range = [" << std::setw(6) << min_x()    << "; " << std::setw(6) << max_x()    << "]" << std::endl;
-    std::cout << "(II) -    y range = [" << std::setw(6) << min_y()    << "; " << std::setw(6) << max_y()    << "]" << std::endl;
-    std::cout << "(II) -    z range = [" << std::setw(6) << min_z()    << "; " << std::setw(6) << max_z()    << "]" << std::endl;
-    std::cout << "(II) -  xyz range = [" << std::setw(6) << min_xyz()  << "; " << std::setw(6) << max_xyz()  << "]" << std::endl;
-    std::cout << "(II) - mass range = [" << std::setw(6) << min_mass() << "; " << std::setw(6) << max_mass() << "]" << std::endl;
+//    std::cout << std::setiosflags(std::ios_base::showpos);
+//    std::cout << "(II) End of a Galaxy object creation" << std::endl;
+//    std::cout << "(II) -    x range = [" << std::setw(6) << min_x()    << "; " << std::setw(6) << max_x()    << "]" << std::endl;
+//    std::cout << "(II) -    y range = [" << std::setw(6) << min_y()    << "; " << std::setw(6) << max_y()    << "]" << std::endl;
+//    std::cout << "(II) -    z range = [" << std::setw(6) << min_z()    << "; " << std::setw(6) << max_z()    << "]" << std::endl;
+//    std::cout << "(II) -  xyz range = [" << std::setw(6) << min_xyz()  << "; " << std::setw(6) << max_xyz()  << "]" << std::endl;
+//    std::cout << "(II) - mass range = [" << std::setw(6) << min_mass() << "; " << std::setw(6) << max_mass() << "]" << std::endl;
 }
 //
 //

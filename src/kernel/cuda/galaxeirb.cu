@@ -88,11 +88,13 @@ __global__ void body2Body_exec(
         //
 
         float4 myPosition = c_pos[ particule_id ];
-        float4 myVelocity = v_dat[ particule_id ];
 
         //
         //
         //
+
+//        float4 myVelocity = v_dat[ particule_id ];
+        float3 myAccel = {0.f, 0.f, 0.f};
 
         for (int idx = 0; idx < nElements; idx += blockDim.x)
         {
@@ -102,31 +104,27 @@ __global__ void body2Body_exec(
             __syncthreads();
 
             #pragma unroll 4
-            for (int p = 0; p < blockDim.x; p += 1)
+            for (uint p = 0; p < blockDim.x; p += 1)
             {
 
                 const float4 other = shPosition[p];
-                float3 r;
-                r.x = other.x - myPosition.x;
-                r.y = other.y - myPosition.y;
-                r.z = other.z - myPosition.z;
-
-                float d = (r.x * r.x) + (r.y * r.y) + (r.z * r.z);
                 
-                float d3;
-                if ( d < 1.0f )
+                float rx = other.x - myPosition.x;
+                float ry = other.y - myPosition.y;
+                float rz = other.z - myPosition.z;
+
+                float d = (rx * rx) + (ry * ry) + (rz * rz);
+                
+                float d3  = 10.0f * other.w;
+                float div = (sqrt(d) * d);
+                if ( d > 1.0f )
                 {
-                    d3 = 10.0f * other.w; // Multi modifiable
-                }
-                else
-                {
-                    d  = sqrt(d);
-                    d3 = 10.0f * other.w / (d * d * d); // Multi modifiable
+                    d3 /= div; // Multi modifiable
                 }
 
-                myVelocity.x += r.x * d3;
-                myVelocity.y += r.y * d3;
-                myVelocity.z += r.z * d3;
+                myAccel.x += rx * d3;
+                myAccel.y += ry * d3;
+                myAccel.z += rz * d3;
             }
 
             __syncthreads();
@@ -139,19 +137,26 @@ __global__ void body2Body_exec(
 
         __syncthreads();
 
+        float4 myVelocity = v_dat[ particule_id ];
+        myVelocity.x += myAccel.x * 2.0f;
+        myVelocity.y += myAccel.y * 2.0f;
+        myVelocity.z += myAccel.z * 2.0f;
+
         myPosition.x = myPosition.x + (myVelocity.x * 0.01f);
         myPosition.y = myPosition.y + (myVelocity.y * 0.01f);
         myPosition.z = myPosition.z + (myVelocity.z * 0.01f);
 
+        __syncthreads();
+
         //
         // update device memory
         //
-
+        
         n_pos[ particule_id ] = myPosition;     // NEXT POSITION !
         v_dat[ particule_id ] = myVelocity;     // NEW  VELOCITY !
     }
 
-    __syncthreads();
+        __syncthreads();
 }
 
 #endif

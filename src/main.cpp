@@ -57,6 +57,7 @@
 #include "./kernel/simd_openmp/AVX512/RenderAVX512OpenMP.hpp"
 
 #include "./kernel/metal/RenderMetalApple.hpp"
+#include "./kernel/metal_v2/RenderMetalApple_v2.hpp"
 
 #include "./kernel/cuda/RenderCUDA.hpp"
 
@@ -227,7 +228,8 @@ int main( int argc, char ** argv )
 #endif
 
 #if defined(__APPLE__)
-    else if( iequals(impl, "metal")         ) k = new RenderMetalApple  ( gg );
+    else if( iequals(impl, "metal")         ) k = new RenderMetalApple   ( gg );
+    else if( iequals(impl, "metal_v2")      ) k = new RenderMetalApple_v2( gg );
 #endif
 
 #if defined(_ENABLE_CUDA_)
@@ -266,6 +268,7 @@ int main( int argc, char ** argv )
 
 #if defined(__APPLE__)
         std::cout << "(EE) - metal         : " << std::endl;
+        std::cout << "(EE) - metal_v2      : " << std::endl;
 #endif
 
 #if defined(_ENABLE_CUDA_)

@@ -47,7 +47,12 @@ bool InitTextRes( const char * font ) {
 		return false;
 	}
 	
-	fread(ttfBuffer, 1, size, fp);
+	int rsize = fread(ttfBuffer, 1, size, fp);
+	if( rsize != size )
+	{
+		fclose( fp );
+		return false;
+	}
 	fclose(fp);
 	fp = 0;
 	

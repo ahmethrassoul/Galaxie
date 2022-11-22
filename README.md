@@ -2,7 +2,7 @@
  
  Le projet GalaxEirb est né il y a quelques années sous l'impulsion de [J. CRENNE](https://www.linkedin.com/in/jeremiecrenne) en 2012. Ce projet dont le nom **GalaxEirb** est la contraction de **GALAXy simulator** and **ensEIRB** avait pour vocation à servir de support à l'enseignement de la programmation parallèle en dernière année du département électronique en option système embarqué.
 
-L'objectif du projet est d'implenter un simulteur d'objets célestes qui est un probleme de type n-body problem. L'espect mathématique de la chose est décrit dans la présentation réalisée par J. Crenne qui est disponible ici:
+L'objectif du projet est d'implenter un simulteur of celestial objects qui est un probleme de type n-body problem. L'espect mathématique de la chose est dérit dans la présentation réalisée par J. Crenne qui est disponible ici:
 
 REF J. Crenne
 
@@ -10,9 +10,9 @@ REF J. Crenne
 
 L'objectif de ce projet est pour vous :
 
-- D'implenter une version fonctionnelle du simulateur de galaxies dans les codes sources mis à votre disposition.
+- D'implenter une version fonctionnelle du simulateur de galaxies dans les codes source mis à votre disposition.
 
-- D'accélérer le processus de simulation à l'aide des compétences que vous avez acquises lors des séances précédentes (cf. HTTP).
+- D'accélérer le processus de simulation à l'aide des compétences que vous avec acquise lors des séances précédentes (cf. HTTP).
 
 Pour accélérer le processus de simulation vous avez le droit d'utiliser toutes les optimisations que vous connaissez et de les associer. Vous pouvez même mettre en oeuvre des approches non étudiés dans le module ex. OpenCL ou METAL (pour ceux qui ont des machines compatibles).
 
@@ -24,11 +24,11 @@ Le repertoire contenant les codes sources est décomposé en 5 parties:
 
 1 - **Backend** : Ce sont les fichiers nécessaires à la création des interfaces graphiques de visualisation (GUI). *Normalement vous n'avez pas besoin de les regarder ni de les modifier*.
 
-2 - **datatype** : Ce sont les fichiers qui décrivent le processus de chargement des données en mémoire. Ces fonctions sont utilisées afin de créer un élément de type **Galaxy** que vous manipulerez. *Normalement vous n'avez pas besoin de les regarder ni de les modifier*.
+2 - **datatype** : Ce sont les fichiers qui décrivent le processus de chargement des données en mémoire. Ces fonctions sont utilisée afin de créer un élément de type **Galaxy** que vous manipulerez. *Normalement vous n'avez pas besoin de les regarder ni de les modifier*.
 
-3 - **Galaxy** : La classe **Galaxy** décrite dans les fichiers sources présents dans ce repertoire fournit décrit la structure de mémorisation des particules. C'est sur cette structuration des données en mémoire que vous devrez travailler.
+3 - **Galaxy** : La classe **Galaxy** décrite dans les fichiers sources présent dans ce repertoire fournit décrit la structure de mémorisation des particules. C'est sur cette structuration des données en mémoire que vous devrez travailler.
 
-4 - **kernel** : Ce repertoire contient un ensemble de sous repertoires qui vous permettront de décrire et d'implanter différentes optimisations sans trop vous fatiguer... L'activation et la descativation des fichiers est automatique à la compilation en fonction du système.
+4 - **kernel** : Ce repertoire contient un ensemble de sous repertoires qui vous permettront de décrire et d'implanter différentes optimisation sans trop vous fatiguer... L'activation et la descativation des fichiers est autimatique à la compilation en fonction du système.
 
 5 - **main.cpp** : C'est le programme principal qui permet de mettre en musique l'ensemble des classes développées.
 
@@ -45,7 +45,7 @@ cmake ..
 make
 ```
 
-Normallly, if everything goes right the compilation process succeeds. Then, you can execute the following command to launch the program in its original state:
+Normallly, if everything goes right the compilation process succeds. Then, you can execute the following command to launch the program in its original state:
 
 ```
 ./galax_eirb --impl null --view null
@@ -68,12 +68,12 @@ In the terminal, a set of lines such as these ones should appear:
 ... ... ... ... ...
 ```
 
-The reported values give the frames per second (fps) performance metric. These values are high because no computation are executed (it is your job !).
+The reported values gives the frames per second (fps) performance metric. These values are high because no computation are executed (it is your job !).
 
 
 ## Observing the particule simulation
 
-In the previous section use used the **Null** render to get the FPS performance level of the processing kernel implementation. It is usefull to measure performance because the OS / GUI hazard impacts on performance measurement. However, it is not really friendly for visuallization and debugging purpose. Consequently, we can change the vizualization render:
+In the previous section use used the **Null** render to get the FPS performance level of the processing kernel implementation. It is usefull to measure performance because to OS / GUI hazard impacts on performance measurement. However, it is not really friendly for visuallization and debugging purpose. Consequently, we can change the vizualization render:
 
 ```
 ./galax_eirb --impl null --view ColorPixel
@@ -132,7 +132,7 @@ whereas ARCH Linux users should execute the following command:
 
 ```
 sudo pamac upgrade
-sudo pamac install glew
+sudo pamac install freeglut3-dev libglew-dev libsdl2-dev
 ```
 
 Installing these libraries should allow you to take advantage of the major features and optimization approaches. For the rest, e.g. CUDA parallelization, you still have the school computers.

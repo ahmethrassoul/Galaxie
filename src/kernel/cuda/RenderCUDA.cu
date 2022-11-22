@@ -33,7 +33,6 @@ RenderCUDA::RenderCUDA( struct galaxy g ) : galaxie( g )
 
     cudaError_t err = cudaSuccess;
 
-    printf("Allocating c_pos\n");
 
     c_pos = (float4*)malloc( nElements * sizeof(float4) );
     if (c_pos == nullptr) {
@@ -42,16 +41,12 @@ RenderCUDA::RenderCUDA( struct galaxy g ) : galaxie( g )
         exit(EXIT_FAILURE);
     }
 
-    printf("Allocating n_pos\n");
-
     n_pos = (float4*)malloc( nElements * sizeof(float4) );
     if (n_pos == nullptr) {
         fprintf(stderr, "Failed to allocate host vector n_pos !\n");
         fprintf(stderr, "issue happned in file %s at line %d\n", __FILE__, __LINE__);
         exit(EXIT_FAILURE);
     }
-
-    printf("Allocating v_dat\n");
 
     v_dat = (float4*)malloc( nElements * sizeof(float4) );
     if (v_dat == nullptr) {
@@ -60,8 +55,6 @@ RenderCUDA::RenderCUDA( struct galaxy g ) : galaxie( g )
         exit(EXIT_FAILURE);
     }
 
-    printf("Allocating gpu_c_pos (%d, %d)\n", nElements, nElements * sizeof(float4));
-
     err = cudaMalloc((void **)&gpu_c_pos, nElements * sizeof(float4));
     if (err != cudaSuccess) {
         fprintf(stderr, "Failed to allocate device vector gpu_c_pos (error code %s)!\n", cudaGetErrorString(err));
@@ -69,16 +62,12 @@ RenderCUDA::RenderCUDA( struct galaxy g ) : galaxie( g )
         exit(EXIT_FAILURE);
     }
 
-    printf("Allocating gpu_n_pos\n");
-
     err = cudaMalloc((void **)&gpu_n_pos, nElements * sizeof(float4));
     if (err != cudaSuccess) {
         fprintf(stderr, "Failed to allocate device vector gpu_n_pos (error code %s)!\n", cudaGetErrorString(err));
         fprintf(stderr, "issue happned in file %s at line %d\n", __FILE__, __LINE__);
         exit(EXIT_FAILURE);
     }
-
-    printf("Allocating gpu_v_dat\n");
 
     err = cudaMalloc((void **)&gpu_v_dat, nElements * sizeof(float4));
     if (err != cudaSuccess) {
@@ -123,8 +112,6 @@ RenderCUDA::RenderCUDA( struct galaxy g ) : galaxie( g )
         n_pos[i] = tmp;
     }
 
-    printf("Loading n_pos on GPU device\n");
-
     err = cudaMemcpy(gpu_n_pos, n_pos, nElements * sizeof(float4), cudaMemcpyHostToDevice);
     if (err != cudaSuccess)
     {
@@ -145,8 +132,6 @@ RenderCUDA::RenderCUDA( struct galaxy g ) : galaxie( g )
         v_dat[i] = tmp;
     }
 
-    printf("Loading gpu_v_dat on GPU device\n");
-
     err = cudaMemcpy(gpu_v_dat, v_dat, nElements * sizeof(float4), cudaMemcpyHostToDevice);
     if (err != cudaSuccess)
     {
@@ -154,8 +139,6 @@ RenderCUDA::RenderCUDA( struct galaxy g ) : galaxie( g )
         fprintf(stderr, "issue happned in file %s at line %d\n", __FILE__, __LINE__);
         exit(EXIT_FAILURE);
     }
-
-    printf("End of constructor\n");
 
 }
 /*
