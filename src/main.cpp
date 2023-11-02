@@ -22,12 +22,14 @@
  *  source distribution.
  *
  */
-#include <stdio.h>
+#include <cstdio>
 #include <stdbool.h>
-#include <math.h>
+#include <cmath>
 #include <sys/time.h>
 #include <chrono>
+#include <iostream>
 #include <iomanip>
+#include <ctime>
 
 #include "Backend/NullRender/NullRender.hpp"
 #include "Backend/SDLBlackPixel/SDLBlackPixel.hpp"
@@ -40,7 +42,7 @@
 #include "./kernel/null/RenderNull.hpp"
 #include "./kernel/naive/RenderNaive.hpp"
 #include "./kernel/optimized/RenderOptim.hpp"
-#include "./kernel/auto_simd/RenderAutoSIMD.hpp"
+#include "./kernel/optim_openmp/RenderOptimOpenMP.hpp"
 
 #include "./kernel/simd/NEON/RenderNEON.hpp"
 #include "./kernel/simd/SSE4/RenderSSE4.hpp"
@@ -55,6 +57,7 @@
 #include "./kernel/simd_openmp/AVX512/RenderAVX512OpenMP.hpp"
 
 #include "./kernel/metal/RenderMetalApple.hpp"
+#include "./kernel/metal_v2/RenderMetalApple_v2.hpp"
 
 #include "./kernel/cuda/RenderCUDA.hpp"
 
@@ -119,10 +122,10 @@ int main( int argc, char ** argv )
 #endif
 
 #if (defined(__ICC) || defined(__INTEL_COMPILER)) == 0
-    std::time_t t = std::time(nullptr);
-    std::cout << "#(II) + Trace date and time : " << std::put_time(std::localtime(&t), "%c %Z") << '\n';
-    printf("#(II)\n");
+//    std::time_t t = std::time(nullptr);
+//    std::cout << "#(II) + Trace date and time : " << std::put_time(std::localtime(&t), "%c %Z") << '\n';
 #endif
+    printf("#(II)\n");
 
     int width  = 640 * 7 / 4;
     int height = 480 * 6 / 4;
@@ -201,7 +204,7 @@ int main( int argc, char ** argv )
     if     ( iequals(impl, "null")          ) k = new RenderNull        ( gg );
     else if( iequals(impl, "naive")         ) k = new RenderNaive       ( gg );
     else if( iequals(impl, "optimized")     ) k = new RenderOptim       ( gg );
-    else if( iequals(impl, "auto-simd")     ) k = new RenderAutoSIMD    ( gg );
+    else if( iequals(impl, "optim-openmp")  ) k = new RenderOptimOpenMP ( gg );
     else if( iequals(impl, "openmp")        ) k = new RenderOpenMP      ( gg );
 
 #if defined(__ARM_NEON__) || defined(__ARM_NEON)
@@ -225,7 +228,8 @@ int main( int argc, char ** argv )
 #endif
 
 #if defined(__APPLE__)
-    else if( iequals(impl, "metal")         ) k = new RenderMetalApple  ( gg );
+    else if( iequals(impl, "metal")         ) k = new RenderMetalApple   ( gg );
+    else if( iequals(impl, "metal_v2")      ) k = new RenderMetalApple_v2( gg );
 #endif
 
 #if defined(_ENABLE_CUDA_)
@@ -239,8 +243,8 @@ int main( int argc, char ** argv )
         std::cout << "(EE) - null          : " << std::endl;
         std::cout << "(EE) - naive         : " << std::endl;
         std::cout << "(EE) - optimized     : " << std::endl;
-        std::cout << "(EE) - auto-simd     : " << std::endl;
         std::cout << "(EE) - openmp        : " << std::endl;
+        std::cout << "(EE) - optim-openmp  : " << std::endl;
 
 #if defined(__ARM_NEON__) || defined(__ARM_NEON)
         std::cout << "(EE) - neon          : " << std::endl;
@@ -264,13 +268,14 @@ int main( int argc, char ** argv )
 
 #if defined(__APPLE__)
         std::cout << "(EE) - metal         : " << std::endl;
-        return EXIT_FAILURE;
+        std::cout << "(EE) - metal_v2      : " << std::endl;
 #endif
 
 #if defined(_ENABLE_CUDA_)
         std::cout << "(EE) - cuda          : " << std::endl;
         return EXIT_FAILURE;
 #endif
+        return EXIT_FAILURE;
     }
 
     delete_galaxy( gg );

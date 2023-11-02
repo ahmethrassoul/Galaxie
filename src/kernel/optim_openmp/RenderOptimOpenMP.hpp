@@ -22,7 +22,8 @@
  *  source distribution.
  *
  */
-#include "RenderNaiveUpdate.hpp"
+#ifndef _RenderOptimOpenMP_
+#define _RenderOptimOpenMP_
 //
 //
 //
@@ -30,10 +31,29 @@
 //
 //
 //
-RenderNaive::RenderNaive( struct galaxy g ) : galaxie( g )
+#include "../Kernel.hpp"
+//
+//
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+class RenderOptimOpenMP : public Kernel
 {
+public:
+    RenderOptimOpenMP( struct galaxy g );
+    RenderOptimOpenMP( Galaxy& g );
 
-}
+    void execute();
+    void render();
+    Galaxy* particules();
+
+    ~RenderOptimOpenMP();
+
+private:
+    Galaxy galaxie;
+};
 //
 //
 //
@@ -41,51 +61,4 @@ RenderNaive::RenderNaive( struct galaxy g ) : galaxie( g )
 //
 //
 //
-RenderNaive::RenderNaive( Galaxy& g ) : galaxie( g )
-{
-
-}
-//
-//
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-//
-//
-void RenderNaive::execute()
-{
-    startExec();    // this is for fps computation
-
-    usleep( 10 );  // to simulate computation time...
-
-    stopExec();    // this is for fps computation
-}
-//
-//
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-//
-//
-RenderNaive::~RenderNaive()
-{
-
-}
-//
-//
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-//
-//
-Galaxy* RenderNaive::particules()
-{
-    return &galaxie;
-}
-//
-//
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-//
-//
+#endif

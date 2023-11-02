@@ -33,19 +33,26 @@
 #include <random>
 
 #include <simd/simd.h>
-#include "./Metal.hpp"
 
- union
-{
-    float data[4];
-    struct
+#ifndef _MACOS_METAL_CPP_
+    #define _MACOS_METAL_CPP_
+    #include "./Metal.hpp"
+#endif
+
+#ifndef _TRUC_STRUCTURE_
+    #define _TRUC_STRUCTURE_
+    union
     {
-        float x;
-        float y;
-        float z;
-        float m;
-     };
- } truc;
+        float data[4];
+        struct
+        {
+            float x;
+            float y;
+            float z;
+            float m;
+         };
+    } truc;
+#endif
 
 class RenderMetalApple  : public Kernel
 {
@@ -79,18 +86,6 @@ public:
 
 private:
     Galaxy galaxie;
-
-    float* ptr_A();
-    float* ptr_B();
-    float* ptr_C();
     int    N();
-
-    void load_A (const float* src);
-    void load_B (const float* src);
-    void store_C(      float* dst);
-
-private:
-    void encodeAddCommand(MTL::ComputeCommandEncoder *computeEncoder);
-    void generateRandomFloatData(MTL::Buffer *buffer);
 };
 #endif

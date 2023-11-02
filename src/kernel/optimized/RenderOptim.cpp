@@ -56,8 +56,8 @@ void RenderOptim::execute()
 {
     startExec();    // this is for fps computation
 
-    usleep( 10 );  // to simulate computation time...
 
+    
     stopExec();    // this is for fps computation
 }
 //

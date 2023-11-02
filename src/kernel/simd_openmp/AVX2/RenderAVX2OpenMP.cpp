@@ -23,6 +23,7 @@
  *
  */
 #include "RenderAVX2OpenMP.hpp"
+#include <omp.h>
 #ifdef __AVX2__
 #include <immintrin.h>
 #endif
@@ -35,7 +36,8 @@
 //
 RenderAVX2OpenMP::RenderAVX2OpenMP( struct galaxy g ) : galaxie( g )
 {
-
+    const int max_threads = omp_get_num_procs() / 2; // DISABLING LOGICAL CORES
+    omp_set_num_threads(max_threads);
 }
 //
 //
@@ -46,7 +48,8 @@ RenderAVX2OpenMP::RenderAVX2OpenMP( struct galaxy g ) : galaxie( g )
 //
 RenderAVX2OpenMP::RenderAVX2OpenMP( Galaxy& g ) : galaxie( g )
 {
-
+    const int max_threads = omp_get_num_procs() / 2; // DISABLING LOGICAL CORES
+    omp_set_num_threads(max_threads);
 }
 //
 //
@@ -60,7 +63,6 @@ void RenderAVX2OpenMP::execute()
 #ifdef __AVX2__
     startExec();    // this is for fps computation
 
-    usleep( 10 );  // to simulate computation time...
 
     stopExec();    // this is for fps computation
 #else

@@ -22,8 +22,10 @@
  *  source distribution.
  *
  */
-#include <stdio.h>
-#include <cuda_runtime.h>
+ #include <metal_stdlib>
+using namespace metal;
+
+constant int THREADGROUP_SIZE = 1024; // seems to be a constant !
 /*
  *
  *
@@ -31,8 +33,6 @@
  *
  *
  */
-#if defined(__NVCC__)
-#define THREADGROUP_SIZE 256
 #define BSIZE 256 			   // Block size in # of threads
 #define softeningSquared 0.01f // original plumer softener is 0.025. here the value is square of it.
 #define damping          1.00f // 0.999f
@@ -44,7 +44,18 @@
  *
  *
  */
-
+ kernel void body2Body_copy_v2(
+              device float4* c_pos,
+        const device float4* n_pos,
+        const device float4* v_dat,
+        const device uint*   nElements,
+        uint    tid      [[ thread_index_in_threadgroup  ]],
+        uint    bid      [[ threadgroup_position_in_grid ]],
+        uint    blockDim [[ threads_per_threadgroup      ]]
+        )
+{
+    
+}
 /*
  *
  *
@@ -52,4 +63,15 @@
  *
  *
  */
-#endif
+kernel void body2Body_exec_v2(
+        const device float4* c_pos,
+              device float4* n_pos,
+              device float4* v_dat,
+        const device uint*   nElements,
+        uint    tid      [[ thread_index_in_threadgroup  ]],
+        uint    bid      [[ threadgroup_position_in_grid ]],
+        uint    blockDim [[ threads_per_threadgroup      ]]
+        )
+{
+
+}

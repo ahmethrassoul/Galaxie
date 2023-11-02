@@ -9,7 +9,7 @@
 #xcrun -sdk macosx metal -c ../src/kernel/metal/galaxeirb.metal -o MyLibrary.air
 #xcrun -sdk macosx metallib MyLibrary.air                       -o default.metallib
 
-xcrun -sdk macosx metal -c ../src/kernel/metal/galaxeirb.metal -o galaxeirb.air
-xcrun -sdk macosx metallib galaxeirb.air                       -o galaxeirb.metallib
+xcrun -sdk macosx metal -c ../src/kernel/metal_v2/galaxeirb_v2.metal -o galaxeirb_v2.air
+xcrun -sdk macosx metallib galaxeirb_v2.air                          -o galaxeirb_v2.metallib
 
 #./bin/benchmark.x

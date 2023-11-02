@@ -23,6 +23,7 @@
  *
  */
 #include "RenderOpenMP.hpp"
+#include <omp.h>
 //
 //
 //
@@ -32,7 +33,14 @@
 //
 RenderOpenMP::RenderOpenMP( struct galaxy g ) : galaxie( g )
 {
-
+#if defined(__ARM_NEON__) || defined(__ARM_NEON)
+    // We keep the default values
+    //const int max_threads = omp_get_num_procs();
+    //omp_set_num_threads(max_threads);
+#else
+    const int max_threads = omp_get_num_procs() / 2; // DISABLING LOGICAL CORES
+    omp_set_num_threads(max_threads);
+#endif
 }
 //
 //
@@ -43,7 +51,13 @@ RenderOpenMP::RenderOpenMP( struct galaxy g ) : galaxie( g )
 //
 RenderOpenMP::RenderOpenMP( Galaxy& g ) : galaxie( g )
 {
-
+#if defined(__ARM_NEON__) || defined(__ARM_NEON)
+    const int max_threads = omp_get_num_procs();
+    omp_set_num_threads(max_threads);
+#else
+    const int max_threads = omp_get_num_procs() / 2; // DISABLING LOGICAL CORES
+    omp_set_num_threads(max_threads);
+#endif
 }
 //
 //
@@ -56,7 +70,6 @@ void RenderOpenMP::execute()
 {
     startExec();    // this is for fps computation
 
-    usleep( 10 );  // to simulate computation time...
 
     stopExec();    // this is for fps computation
 }

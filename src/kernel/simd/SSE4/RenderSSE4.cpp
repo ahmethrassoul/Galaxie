@@ -60,7 +60,6 @@ void RenderSSE4::execute()
 #ifdef __SSE4_2__
     startExec();    // this is for fps computation
 
-    usleep( 10 );  // to simulate computation time...
 
     stopExec();    // this is for fps computation
 #else

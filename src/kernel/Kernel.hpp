@@ -51,7 +51,7 @@ public:
     virtual void execute() = 0;
     virtual Galaxy* particules () = 0;
 
-    ~Kernel();
+    virtual ~Kernel();
 
     float avgExecTime();
 

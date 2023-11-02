@@ -25,6 +25,7 @@
 #if defined(__ARM_NEON__) || defined(__ARM_NEON)
 #include "RenderNEONOpenMP.hpp"
 #include "arm_neon.h"
+#include <omp.h>
 //
 //
 //
@@ -34,7 +35,8 @@
 //
 RenderNEONOpenMP::RenderNEONOpenMP( struct galaxy g ) : galaxie( g )
 {
-
+    const int max_threads = omp_get_num_procs(); // no division by two there is no logical cores in ARM systems
+    omp_set_num_threads(max_threads);
 }
 //
 //
@@ -45,7 +47,8 @@ RenderNEONOpenMP::RenderNEONOpenMP( struct galaxy g ) : galaxie( g )
 //
 RenderNEONOpenMP::RenderNEONOpenMP( Galaxy& g ) : galaxie( g )
 {
-
+    const int max_threads = omp_get_num_procs(); // no division by two there is no logical cores in ARM systems
+    omp_set_num_threads(max_threads);
 }
 //
 //
@@ -57,8 +60,6 @@ RenderNEONOpenMP::RenderNEONOpenMP( Galaxy& g ) : galaxie( g )
 void RenderNEONOpenMP::execute()
 {
     startExec();    // this is for fps computation
-
-    usleep( 10 );  // to simulate computation time...
 
     stopExec();    // this is for fps computation
 }

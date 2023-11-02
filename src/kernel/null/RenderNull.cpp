@@ -56,7 +56,7 @@ void RenderNull::execute()
 {
     startExec();   // this is for fps computation
 
-    usleep( 10 );  // to simulate computation time...
+    usleep( 10 );  // a simple usleep to avoid +inf fps in the terminal
 
     stopExec();    // this is for fps computation
 }

@@ -23,6 +23,7 @@
  *
  */
 #include "RenderSSE4OpenMP.hpp"
+#include <omp.h>
 #ifdef __SSE4_2__
 #include <immintrin.h>
 #endif
@@ -35,7 +36,8 @@
 //
 RenderSSE4OpenMP::RenderSSE4OpenMP( struct galaxy g ) : galaxie( g )
 {
-
+    const int max_threads = omp_get_num_procs() / 2; // DISABLING LOGICAL CORES
+    omp_set_num_threads(max_threads);
 }
 //
 //
@@ -46,7 +48,8 @@ RenderSSE4OpenMP::RenderSSE4OpenMP( struct galaxy g ) : galaxie( g )
 //
 RenderSSE4OpenMP::RenderSSE4OpenMP( Galaxy& g ) : galaxie( g )
 {
-
+    const int max_threads = omp_get_num_procs() / 2; // DISABLING LOGICAL CORES
+    omp_set_num_threads(max_threads);
 }
 //
 //
@@ -60,7 +63,6 @@ void RenderSSE4OpenMP::execute()
 #ifdef __SSE4_2__
     startExec();    // this is for fps computation
 
-    usleep( 10 );  // to simulate computation time...
 
     stopExec();    // this is for fps computation
 #else

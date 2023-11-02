@@ -17,44 +17,68 @@
  *
  *  2. Altered source versions must be plainly marked as such,
  *  and must not be misrepresented as being the original software.
- *  
+ *
  *  3. This notice may not be removed or altered from any
  *  source distribution.
  *
  */
-#if !defined(_RenderCUDA_) && ( defined(__NVCC__) || defined(_ENABLE_CUDA_) )
-#define _RenderCUDA_
+#if !defined(_RenderMetalApple_v2_) && defined(__APPLE__)
+#define _RenderMetalApple_v2_
 
 #include "../Kernel.hpp"
 #include <iostream>
+#include <omp.h>
 #include <cstring>
 #include <chrono>
+#include <random>
 
-#ifndef __NVCC__
-    typedef struct float4 {
-        float x;
-        float y;
-        float z;
-        float w;
-    } float4;
+#include <simd/simd.h>
+
+#ifndef _MACOS_METAL_CPP_
+    #define _MACOS_METAL_CPP_
+    #include "./Metal.hpp"
 #endif
 
-class RenderCUDA  : public Kernel
+#ifndef _TRUC_STRUCTURE_
+    #define _TRUC_STRUCTURE_
+    union
+    {
+        float data[4];
+        struct
+        {
+            float x;
+            float y;
+            float z;
+            float m;
+         };
+    } truc;
+#endif
+
+class RenderMetalApple_v2  : public Kernel
 {
 public:
-    float4* c_pos;
-    float4* n_pos;
-    float4* v_dat;
+    MTL::Device* _mDevice;
 
-    float4* gpu_c_pos;
-    float4* gpu_n_pos;
-    float4* gpu_v_dat;
+    // The compute pipeline generated from the compute kernel in the .metal shader file.
+    MTL::ComputePipelineState *_mExecFunctionPSO;
+    MTL::ComputePipelineState *_mCopyFunctionPSO;
+
+    // The command queue used to pass commands to the device.
+    MTL::CommandQueue *_mCommandQueue;
+
+    // Buffers to hold data.
+    MTL::Buffer* c_pos;
+    MTL::Buffer* n_pos;
+    MTL::Buffer* v_dat;
+    MTL::Buffer*  size;
 
     int nElements;
 
+    bool sharedMemory;
+
 public:
-     RenderCUDA(struct galaxy g );
-    ~RenderCUDA();
+     RenderMetalApple_v2(struct galaxy g );
+    ~RenderMetalApple_v2();
 
     void execute();
     void render();
@@ -62,5 +86,6 @@ public:
 
 private:
     Galaxy galaxie;
+    int    N();
 };
 #endif

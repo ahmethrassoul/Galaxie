@@ -22,7 +22,8 @@
  *  source distribution.
  *
  */
-#include "RenderAutoSIMD.hpp"
+#include "RenderOptimOpenMP.hpp"
+#include <omp.h>
 //
 //
 //
@@ -30,9 +31,16 @@
 //
 //
 //
-RenderAutoSIMD::RenderAutoSIMD( struct galaxy g ) : galaxie( g )
+RenderOptimOpenMP::RenderOptimOpenMP( struct galaxy g ) : galaxie( g )
 {
-
+#if defined(__ARM_NEON__) || defined(__ARM_NEON)
+    // We keep the default values
+    //const int max_threads = omp_get_num_procs();
+    //omp_set_num_threads(max_threads);
+#else
+    const int max_threads = omp_get_num_procs() / 2; // DISABLING LOGICAL CORES
+    omp_set_num_threads(max_threads);
+#endif
 }
 //
 //
@@ -41,9 +49,16 @@ RenderAutoSIMD::RenderAutoSIMD( struct galaxy g ) : galaxie( g )
 //
 //
 //
-RenderAutoSIMD::RenderAutoSIMD( Galaxy& g ) : galaxie( g )
+RenderOptimOpenMP::RenderOptimOpenMP( Galaxy& g ) : galaxie( g )
 {
-
+#if defined(__ARM_NEON__) || defined(__ARM_NEON)
+    // We keep the default values
+    //const int max_threads = omp_get_num_procs();
+    //omp_set_num_threads(max_threads);
+#else
+    const int max_threads = omp_get_num_procs() / 2; // DISABLING LOGICAL CORES
+    omp_set_num_threads(max_threads);
+#endif
 }
 //
 //
@@ -52,10 +67,9 @@ RenderAutoSIMD::RenderAutoSIMD( Galaxy& g ) : galaxie( g )
 //
 //
 //
-void RenderAutoSIMD::execute()
+void RenderOptimOpenMP::execute()
 {
-    startExec();   // this is for fps computation
-
+    startExec();    // this is for fps computation
 
 
     stopExec();    // this is for fps computation
@@ -67,7 +81,7 @@ void RenderAutoSIMD::execute()
 //
 //
 //
-RenderAutoSIMD::~RenderAutoSIMD()
+RenderOptimOpenMP::~RenderOptimOpenMP()
 {
 
 }
@@ -78,7 +92,7 @@ RenderAutoSIMD::~RenderAutoSIMD()
 //
 //
 //
-Galaxy* RenderAutoSIMD::particules()
+Galaxy* RenderOptimOpenMP::particules()
 {
     return &galaxie;
 }
