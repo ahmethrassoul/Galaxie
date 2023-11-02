@@ -172,6 +172,7 @@ set(SOURCE_FILES
         ./src/kernel/cuda/RenderCUDA.cu                        # NVIDIA CUDA (GPU)
         ./src/kernel/cuda/galaxeirb.cu                         # NVIDIA CUDA (GPU)
         ./src/kernel/openmp/RenderOpenMP.cpp                   # OPENMP
+        ./src/kernel/optim_openmp/RenderOptimOpenMP.cpp
         ./src/kernel/simd_openmp/NEON/RenderNEONOpenMP.cpp     # OPENMP + NEON
         ./src/kernel/simd_openmp/SSE4/RenderSSE4OpenMP.cpp     # OPËNMP + SSE4
         ./src/kernel/simd_openmp/AVX2/RenderAVX2OpenMP.cpp     # OPENMP + AVX2

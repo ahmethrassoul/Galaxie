@@ -44,7 +44,6 @@
 #include "./kernel/null/RenderNull.hpp"
 #include "./kernel/naive/RenderNaive.hpp"
 #include "./kernel/optimized/RenderOptim.hpp"
-
 #include "./kernel/optim_openmp/RenderOptimOpenMP.hpp"
 
 #include "./kernel/simd/NEON/RenderNEON.hpp"

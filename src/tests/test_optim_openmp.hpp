@@ -34,8 +34,8 @@ TEST_CASE( "NAIVE vs Optimized OPENMP", "[optim-openmp]" )
         exit( EXIT_FAILURE );
     }
 
-    Kernel* k_ref = new RenderNaive ( galaxie );
-    Kernel* k_mod = new RenderOpenMP( galaxie );
+    Kernel* k_ref = new RenderNaive      ( galaxie );
+    Kernel* k_mod = new RenderOptimOpenMP( galaxie );
 
     delete_galaxy( galaxie  );
 
