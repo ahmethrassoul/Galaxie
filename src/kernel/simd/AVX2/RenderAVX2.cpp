@@ -60,19 +60,7 @@ void RenderAVX2::execute()
 #ifdef __AVX2__
     startExec();    // this is for fps computation
 
-
-    stopExec();    /extern __global__  void body2Body_exec(
-                                        const float4* c_pos,
-                                              float4* n_pos,
-                                              float4* v_dat,
-                                        const int     nElements);
-//
-extern __global__  void body2Body_copy(
-                                              float4* c_pos,
-                                        const float4* n_pos,
-                                        const float4* v_dat,
-                                        const int     nElements);
-/ this is for fps computation
+    stopExec();
 #else
     printf("(EE) The current platform does not support INTEL AVX2 SIMD extension...\n");
     exit( EXIT_FAILURE );
