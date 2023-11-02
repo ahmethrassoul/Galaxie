@@ -81,10 +81,10 @@ struct galaxy LoadTabFromFile(const std::string filename, const int step)
     //
     // ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 
     //
-    std::cout << "(II) The puncturing is set to (" << step << ")"   << std::endl;
-    std::cout << "(II) The file was loaded (" << filename << ")"   << std::endl;
-    std::cout << "(II) # of particules in file = " << lineNumber   << std::endl;
-    std::cout << "(II) # of loaded particules  = " << liste.size() << std::endl;
+//  std::cout << "(II) The puncturing is set to (" << step << ")"   << std::endl;
+//  std::cout << "(II) The file was loaded (" << filename << ")"   << std::endl;
+//  std::cout << "(II) # of particules in file = " << lineNumber   << std::endl;
+//  std::cout << "(II) # of loaded particules  = " << liste.size() << std::endl;
 
     return g;
 }

@@ -20,7 +20,6 @@ option(BUILD_LINUX_ARM_NOGPU   "Build test programs" OFF) # LINUX INTEL (WITH GP
 if(BUILD_MACOS_ARM)
         SET(CMAKE_C_COMPILER   /opt/homebrew/opt/llvm/bin/clang)
         SET(CMAKE_CXX_COMPILER /opt/homebrew/opt/llvm/bin/clang++)
-
         SET(CMAKE_CXX_FLAGS "-Wall")
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcpu=native -mtune=native -Ofast -ffast-math")
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")

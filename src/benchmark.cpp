@@ -97,10 +97,9 @@ int main( int argc, char ** argv )
 #endif
 
 #if (defined(__ICC) || defined(__INTEL_COMPILER)) == 0
-    std::time_t t = std::time(nullptr);
-    printf("(II)\n");
-    std::cout << "(II) Trace date and time : " << '\n';
-    std::cout << "(II) + " << std::put_time(std::localtime(&t), "%c %Z") << '\n';
+//    printf("(II)\n");
+//    std::cout << "(II) Trace date and time : " << '\n';
+//    std::cout << "(II) + " << std::put_time(std::localtime(&t), "%c %Z") << '\n';
 #endif
     printf("(II)\n");
 
@@ -184,7 +183,6 @@ int main( int argc, char ** argv )
     const float fps_ref        =    (float)n_ref * (1000.0f / execTime_ref);
 
     printf("[naive    ]  | EXEC %4d | TIME %3ds | FPS %7.3f | Speed-up %7.3f |\n", n_ref, (int)(execTime_ref/1000), fps_ref, 1.0f);
-
     {
         printf("(II) Launching RenderOptim measure\r");
         fflush(stdout);
@@ -262,6 +260,7 @@ int main( int argc, char ** argv )
 
         printf("[optim-omp]  | EXEC %4d | TIME %3ds | FPS %7.3f | Speed-up %7.3f |\n", n_mod, (int)(execTime_mod/1000), fps_mod, speedup);
     }
+
 
 #ifdef __SSE4_2__
     {

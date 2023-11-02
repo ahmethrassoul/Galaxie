@@ -273,7 +273,6 @@ int main( int argc, char ** argv )
 
 #if defined(_ENABLE_CUDA_)
         std::cout << "(EE) - cuda          : " << std::endl;
-        return EXIT_FAILURE;
 #endif
         return EXIT_FAILURE;
     }

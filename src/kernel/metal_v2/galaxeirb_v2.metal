@@ -44,34 +44,4 @@ constant int THREADGROUP_SIZE = 1024; // seems to be a constant !
  *
  *
  */
- kernel void body2Body_copy_v2(
-              device float4* c_pos,
-        const device float4* n_pos,
-        const device float4* v_dat,
-        const device uint*   nElements,
-        uint    tid      [[ thread_index_in_threadgroup  ]],
-        uint    bid      [[ threadgroup_position_in_grid ]],
-        uint    blockDim [[ threads_per_threadgroup      ]]
-        )
-{
-    
-}
-/*
- *
- *
- *##############################################################################
- *
- *
- */
-kernel void body2Body_exec_v2(
-        const device float4* c_pos,
-              device float4* n_pos,
-              device float4* v_dat,
-        const device uint*   nElements,
-        uint    tid      [[ thread_index_in_threadgroup  ]],
-        uint    bid      [[ threadgroup_position_in_grid ]],
-        uint    blockDim [[ threads_per_threadgroup      ]]
-        )
-{
 
-}
