@@ -6,6 +6,11 @@ SET(CMAKE_BUILD_TYPE Release)
 #
 # To be enable for target with NVIDIA GPUs
 #
+project(cmake_and_cuda LANGUAGES CXX CUDA)
+enable_language(CUDA)
+# set_property(TARGET test PROPERTY CUDA_ARCHITECTURES native)
+# cmake -DCMAKE_CUDA_ARCHITECTURES=native -DCMAKE_BUILD_TYPE=Release ..
+#
 option(BUILD_MACOS_ARM         "Build test programs" OFF)  # MACOS INTEL-Mx
 option(BUILD_MACOS_INTEL       "Build test programs" OFF) # MACOS ARM-Mx
 option(BUILD_LINUX_INTEL_GPU   "Build test programs" ON) # LINUX INTEL (GPU)
@@ -66,6 +71,7 @@ if(BUILD_LINUX_INTEL_GPU)
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -ffast-math")
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_ENABLE_SDL_")
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_ENABLE_CUDA_")
 endif()
 #
 #
