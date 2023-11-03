@@ -11,6 +11,12 @@ enable_language(CUDA)
 # set_property(TARGET test PROPERTY CUDA_ARCHITECTURES native)
 # cmake -DCMAKE_CUDA_ARCHITECTURES=native -DCMAKE_BUILD_TYPE=Release ..
 #
+#  556  export PATH=$PATH:/opt/nvcc/cuda-12.0/bin
+#  571  export CUDAToolkit_ROOT=/opt/nvcc/cuda-12.0/
+#  573  export CMAKE_CUDA_COMPILER=/opt/nvcc/cuda-12.0/bin/nvcc
+#  575  export CMAKE_CUDA_COMPILER=/opt/nvcc/cuda-12.0/bin
+#  578  export CUDACXX=/opt/nvcc/cuda-12.0/bin/nvcc
+#
 option(BUILD_MACOS_ARM         "Build test programs" OFF)  # MACOS INTEL-Mx
 option(BUILD_MACOS_INTEL       "Build test programs" OFF) # MACOS ARM-Mx
 option(BUILD_LINUX_INTEL_GPU   "Build test programs" ON) # LINUX INTEL (GPU)
