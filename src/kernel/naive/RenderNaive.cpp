@@ -23,6 +23,7 @@
  *
  */
 #include "RenderNaive.hpp"
+#include <strings.h>
 //
 //
 //
@@ -32,7 +33,9 @@
 //
 RenderNaive::RenderNaive( struct galaxy g ) : galaxie( g )
 {
-
+    accel_x = new float[g.size];
+    accel_y = new float[g.size];
+    accel_z = new float[g.size];
 }
 //
 //
@@ -43,7 +46,9 @@ RenderNaive::RenderNaive( struct galaxy g ) : galaxie( g )
 //
 RenderNaive::RenderNaive( Galaxy& g ) : galaxie( g )
 {
-
+    accel_x = new float[g.size];
+    accel_y = new float[g.size];
+    accel_z = new float[g.size];
 }
 //
 //
@@ -56,6 +61,55 @@ void RenderNaive::execute()
 {
     startExec();    // this is for fps computation
 
+    bzero(accel_x, sizeof(float) * galaxie.size);
+    bzero(accel_y, sizeof(float) * galaxie.size);
+    bzero(accel_z, sizeof(float) * galaxie.size);
+
+    //
+    // On calcule les nouvelles positions de toutes les particules
+    //
+
+    for(int i = 0; i < galaxie.size; i += 1)
+    {
+        for(int j = 0; j < galaxie.size; j += 1)
+        {
+            if( i != j )
+            {
+                const float dx = galaxie.pos_x[j] - galaxie.pos_x[i];
+                const float dy = galaxie.pos_y[j] - galaxie.pos_y[i];
+                const float dz = galaxie.pos_z[j] - galaxie.pos_z[i];
+
+                float dij = dx * dx + dy * dy + dz * dz;
+
+                float d3;
+                if ( dij < 1.0f )
+                {
+                    d3 = 10.0f * galaxie.mass[j]; // Multi modifiable
+                }
+                else
+                {
+                    const float sqrtd = sqrtf(dij);
+                    d3 = 10.0f * galaxie.mass[j] / (sqrtd * sqrtd * sqrtd); // Multi modifiable
+                }
+
+                accel_x[i] += (dx * d3);
+                accel_y[i] += (dy * d3);
+                accel_z[i] += (dz * d3);
+            }
+        }
+    }
+
+
+    for(int i = 0; i < galaxie.size; i += 1)
+    {
+        galaxie.vel_x[i] += (accel_x[i] * 2.0f);
+        galaxie.vel_y[i] += (accel_y[i] * 2.0f);
+        galaxie.vel_z[i] += (accel_z[i] * 2.0f);
+
+        galaxie.pos_x[i] += (galaxie.vel_x[i] * dt);
+        galaxie.pos_y[i] += (galaxie.vel_y[i] * dt);
+        galaxie.pos_z[i] += (galaxie.vel_z[i] * dt);
+    }
 
     stopExec();    // this is for fps computation
 }
@@ -68,7 +122,9 @@ void RenderNaive::execute()
 //
 RenderNaive::~RenderNaive()
 {
-
+    delete[] accel_x;
+    delete[] accel_y;
+    delete[] accel_z;
 }
 //
 //

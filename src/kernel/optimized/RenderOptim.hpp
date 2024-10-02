@@ -53,6 +53,9 @@ public:
 
 private:
     Galaxy galaxie;
+    float* accel_x;
+    float* accel_y;
+    float* accel_z;
 };
 //
 //
