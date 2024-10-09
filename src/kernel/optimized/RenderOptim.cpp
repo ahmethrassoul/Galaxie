@@ -33,9 +33,7 @@
 //
 RenderOptim::RenderOptim( struct galaxy g ) : galaxie( g )
 {
-    accel_x = new float[g.size];
-    accel_y = new float[g.size];
-    accel_z = new float[g.size];
+    
 }
 //
 //
@@ -46,9 +44,7 @@ RenderOptim::RenderOptim( struct galaxy g ) : galaxie( g )
 //
 RenderOptim::RenderOptim( Galaxy& g ) : galaxie( g )
 {
-    accel_x = new float[g.size];
-    accel_y = new float[g.size];
-    accel_z = new float[g.size];
+
 }
 //
 //
@@ -61,21 +57,23 @@ void RenderOptim::execute()
 {
     startExec();    // this is for fps computation
 
-    bzero(accel_x, sizeof(float) * galaxie.size);
-    bzero(accel_y, sizeof(float) * galaxie.size);
-    bzero(accel_z, sizeof(float) * galaxie.size);
 
     //
     // On calcule les nouvelles positions de toutes les particules
     //
-    // float accel_x = ;
-    // accel_y = ;
-    // accel_z = ;
+
     for(int i = 0; i < galaxie.size; i += 1)
     {
-        const float pos_x_i = galaxie.pos_x[i];
-        const float pos_y_i = galaxie.pos_y[i];
-        const float pos_z_i = galaxie.pos_z[i];
+        float pos_x_i = galaxie.pos_x[i];
+        float pos_y_i = galaxie.pos_y[i];
+        float pos_z_i = galaxie.pos_z[i];
+
+        float accel_x = 0.f;
+        float accel_y = 0.f;
+        float accel_z = 0.f;
+
+        // simd
+
         for(int j = 0; j < galaxie.size; j += 1)
         {
             if( i != j )
@@ -84,7 +82,7 @@ void RenderOptim::execute()
                 const float dy = galaxie.pos_y[j] - pos_y_i;
                 const float dz = galaxie.pos_z[j] - pos_z_i;
 
-                float dij = dx * dx + dy * dy + dz * dz;
+                const float dij = dx * dx + dy * dy + dz * dz;
 
                 float d3;
                 const float m_a = 10.0f * galaxie.mass[j];
@@ -98,24 +96,26 @@ void RenderOptim::execute()
                     d3 = m_a / (sqrtd * dij); // Multi modifiable
                 }
 
-                accel_x[i] += (dx * d3);
-                accel_y[i] += (dy * d3);
-                accel_z[i] += (dz * d3);
+                accel_x += (dx * d3);
+                accel_y += (dy * d3);
+                accel_z += (dz * d3);
             }
         }
-    }
 
+        //////simd end
+
+        galaxie.vel_x[i] += (accel_x * 2);
+        galaxie.vel_y[i] += (accel_y * 2);
+        galaxie.vel_z[i] += (accel_z * 2);
+    }
+    
     for(int i = 0; i < galaxie.size; i += 1)
     {
-        galaxie.vel_x[i] += (accel_x[i] * 2.0f);
-        galaxie.vel_y[i] += (accel_y[i] * 2.0f);
-        galaxie.vel_z[i] += (accel_z[i] * 2.0f);
-
         galaxie.pos_x[i] += (galaxie.vel_x[i] * dt);
         galaxie.pos_y[i] += (galaxie.vel_y[i] * dt);
         galaxie.pos_z[i] += (galaxie.vel_z[i] * dt);
     }
-    
+
     stopExec();    // this is for fps computation
 }
 //
@@ -127,9 +127,6 @@ void RenderOptim::execute()
 //
 RenderOptim::~RenderOptim()
 {
-    delete[] accel_x;
-    delete[] accel_y;
-    delete[] accel_z;
 }
 //
 //
