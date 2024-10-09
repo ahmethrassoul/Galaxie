@@ -76,7 +76,7 @@ void RenderSSE4::execute()
 //
 RenderSSE4::~RenderSSE4()
 {
-
+    
 }
 //
 //

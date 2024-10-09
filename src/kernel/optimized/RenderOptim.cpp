@@ -68,9 +68,9 @@ void RenderOptim::execute()
     //
     // On calcule les nouvelles positions de toutes les particules
     //
-    float accel_x = ;
-    accel_y = ;
-    accel_z = ;
+    // float accel_x = ;
+    // accel_y = ;
+    // accel_z = ;
     for(int i = 0; i < galaxie.size; i += 1)
     {
         const float pos_x_i = galaxie.pos_x[i];
@@ -103,13 +103,7 @@ void RenderOptim::execute()
                 accel_z[i] += (dz * d3);
             }
         }
-
     }
-
-    accel_x = ;
-    accel_y = ;
-    accel_z = ;
-
 
     for(int i = 0; i < galaxie.size; i += 1)
     {
