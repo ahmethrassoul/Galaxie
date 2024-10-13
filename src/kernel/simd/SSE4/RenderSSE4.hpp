@@ -32,6 +32,7 @@
 //
 //
 #include "../../Kernel.hpp"
+#include <xmmintrin.h> 
 //
 //
 //
