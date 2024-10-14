@@ -97,9 +97,9 @@ RenderSSE4::~RenderSSE4()
     for(int i = 0; i < galaxie.size; i += 1)
     {
         
-        //__m128 buff_accel_x = _mm_zero_ps( galaxie.accel_x );
-        //__m128 buff_accel_y = _mm_zero_ps( galaxie.accel_y );
-        //__m128 buff_accel_z = _mm_zero_ps( galaxie.accel_z );
+        __m128 buff_accel_x = _mm_zero_ps( galaxie.accel_x );
+        __m128 buff_accel_y = _mm_zero_ps( galaxie.accel_y );
+        __m128 buff_accel_z = _mm_zero_ps( galaxie.accel_z );
 
         const __m128 pos_x_i    = _mm_set_ps1( galaxie.pos_x[i] );
         const __m128 pos_y_i    = _mm_set_ps1( galaxie.pos_y[i] );
@@ -131,7 +131,7 @@ RenderSSE4::~RenderSSE4()
             const __m128 dij            = _mm_add_ps       ( dij_temp , dz_2 );
 
             
-            const __m128 ma_j_vec       = _mm_set_ps       ( galaxie.mass[j],galaxie.mass[j+1],galaxie.mass[j+2],galaxie.mass[j+3]);
+            const __m128 ma_j_vec      = _mm_set_ps      ( galaxie.mass[j],galaxie.mass[j+1],galaxie.mass[j+2],galaxie.mass[j+3]);
             const __m128 m_a_simple     = _mm_mul_ps       ( ma_j_vec, tab_10 ); // vecteur de m_a
             const __m128 sqrt_dij       = _mm_sqrt_ps      ( dij ); 
             const __m128 dij_3          = _mm_mul_ps       ( sqrt_dij , dij );
@@ -142,10 +142,17 @@ RenderSSE4::~RenderSSE4()
             const __m128 masq           = _mm_cmplt_ps    ( dij , tab_1 );
             const __m128 d3             = _mm_blendv_ps   ( m_a_complex , m_a_simple  , masq );
 
+			const __m128 mul_dx_d3		= _mm_mul_ps	   ( d3 , dx);
+			buff_accel_x				= _mm_add_ps	   ( dx , mul_dx_d3);
 
+			const __m128 mul_dy_d3		= _mm_mul_ps	   ( d3 , dy);
+			buff_accel_y				= _mm_add_ps	   ( dy , mul_dy_d3);
+
+			const __m128 mul_dz_d3		= _mm_mul_ps	   ( d3 , dz);
+			buff_accel_z				= _mm_add_ps	   ( dz , mul_dz_d3);
 
         }
-
+		_mm_storeu_ps(buff_mass_tab , buff_accel_x );
         // fin SIMD
 
         galaxie.vel_x[i] += (accel_x * 2);
