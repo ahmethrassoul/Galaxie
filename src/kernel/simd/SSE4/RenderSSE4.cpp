@@ -137,6 +137,33 @@ void RenderSSE4::execute()
     printf("(EE) The current platform does not support INTEL SSE4 SIMD extension...\n");
     exit( EXIT_FAILURE );
 #endif
+
+#ifdef outerloop
+    startExec();    // this is for fps computation
+
+    // starting for simd
+    for(int i = 0; i < galaxie.size; i += simd)
+    {
+
+        for(int j = 0; j < galaxie.size; j += 1)
+        {
+
+        }
+    }
+
+    // end simd
+    for(int i = 0; i < galaxie.size; i += 1)
+    {
+        galaxie.pos_x[i] += (galaxie.vel_x[i] * dt);
+        galaxie.pos_y[i] += (galaxie.vel_y[i] * dt);
+        galaxie.pos_z[i] += (galaxie.vel_z[i] * dt);
+    }
+
+
+
+
+    stopExec();
+#endif
 }
 //
 //
@@ -169,4 +196,5 @@ Galaxy* RenderSSE4::particules()
 // make && ./test "NAIVE vs INTEL SSE4"
 //  ./test --list-tests
 // ./galax_eirb --impl optimized --view null
+//./galax_eirb --impl SSE4 --view null
 //myate@barn-e-02:~/SNUM3/Galaxie/SE301-GalaxEirb-Student/src/kernel/simd/SSE4$
