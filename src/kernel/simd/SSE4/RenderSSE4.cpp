@@ -94,7 +94,7 @@ void RenderSSE4::execute()
             const __m128 dz_2           = _mm_mul_ps       ( dz , dz );
 
             const __m128 dijp           = dx_2 + dy_2 + dz_2;
-            const __m128 dij            = _mm_max_ps( dijp, tab_1);
+            const __m128 dij            = _mm_max_ps( dijp, tab_1); //maixmum avec 1
             
             const __m128 ma_j_vec       = _mm_loadu_ps     ( galaxie.mass + j );
 
@@ -103,19 +103,16 @@ void RenderSSE4::execute()
             const __m128 dij_3          = _mm_mul_ps       ( sqrt_dij , dij );
             const __m128 m_a_complex    = _mm_div_ps       ( m_a_simple , dij_3 );
 
-
-            // comparaison du if dij < 1.0f
-//            const __m128 masq           = _mm_cmp_ps       ( dij , tab_1 ,_CMP_GE_OS);
-//            const __m128 d3             = _mm_blendv_ps    ( m_a_simple , m_a_complex , masq );
             const __m128 d3 = m_a_complex;
 
-                        buff_accel_x                    += _mm_mul_ps( d3 , dx);
-                        buff_accel_y                    += _mm_mul_ps( d3 , dy);
-                        buff_accel_z                    += _mm_mul_ps( d3 , dz);
+            buff_accel_x                    += _mm_mul_ps( d3 , dx);
+            buff_accel_y                    += _mm_mul_ps( d3 , dy);
+            buff_accel_z                    += _mm_mul_ps( d3 , dz);
 
         }
+
         float tab_accel_x[4], tab_accel_y[4], tab_accel_z[4];
-                _mm_storeu_ps( tab_accel_x , buff_accel_x );
+        _mm_storeu_ps( tab_accel_x , buff_accel_x );
         _mm_storeu_ps( tab_accel_y , buff_accel_y );
         _mm_storeu_ps( tab_accel_z , buff_accel_z );
 
@@ -169,6 +166,7 @@ Galaxy* RenderSSE4::particules()
 /////////////////////////////////////////////////////////////////////////////
 //
 // make && ./test "NAIVE vs OPTIMIZED"
-// make && ./test NAIVE vs INTEL SSE4
+// make && ./test "NAIVE vs INTEL SSE4"
 //  ./test --list-tests
-// ./galax_eirb --impl optimized --view nullmyate@barn-e-02:~/SNUM3/Galaxie/SE301-GalaxEirb-Student/src/kernel/simd/SSE4$
+// ./galax_eirb --impl optimized --view null
+//myate@barn-e-02:~/SNUM3/Galaxie/SE301-GalaxEirb-Student/src/kernel/simd/SSE4$
